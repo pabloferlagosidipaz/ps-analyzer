@@ -50,3 +50,6 @@ Thumbs.db
 package-lock.json
 src-tauri/binaries/
 /debug
+
+# Local symlinks
+engine
