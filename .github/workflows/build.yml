@@ -91,8 +91,10 @@ jobs:
           # Manually install headers and library (skip googletest/examples)
           mkdir -p ../../sdslLite/include ../../sdslLite/lib
           cp -r ../include/sdsl ../../sdslLite/include/
-          cp lib/libsdsl.a ../../sdslLite/lib/
-          cp external/libdivsufsort/lib/libdivsufsort.a external/libdivsufsort/lib/libdivsufsort64.a ../../sdslLite/lib/
+          # Find and copy built library files
+          find . -name "libsdsl.a" -exec cp {} ../../sdslLite/lib/ \;
+          find . -name "libdivsufsort.a" -exec cp {} ../../sdslLite/lib/ \;
+          find . -name "libdivsufsort64.a" -exec cp {} ../../sdslLite/lib/ \;
           cd ../../..
           # Remove -ldl (not available on Windows) and build tracy
           sed -i 's/-ldl//g' Makefile
