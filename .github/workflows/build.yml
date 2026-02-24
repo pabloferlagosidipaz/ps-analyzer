@@ -82,6 +82,8 @@ jobs:
           # Build Tracy
           git clone --recursive https://github.com/gear-genomics/tracy.git tracy-build
           cd tracy-build
+          # Patch sdsl-lite CMakeLists.txt to work with modern CMake (>= 3.27)
+          sed -i 's/cmake_minimum_required(VERSION [0-9.]*)/cmake_minimum_required(VERSION 3.5)/' src/xxsds/CMakeLists.txt
           sed -i 's/-ldl//g' Makefile
           make STATIC=1 CXX=x86_64-w64-mingw32-g++
           
