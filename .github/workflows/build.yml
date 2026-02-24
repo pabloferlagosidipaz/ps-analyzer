@@ -63,6 +63,10 @@ jobs:
             mingw-w64-x86_64-curl
             mingw-w64-x86_64-zlib
             mingw-w64-x86_64-bzip2
+            autoconf
+            automake
+            libtool
+            pkg-config
             make
             git
 
