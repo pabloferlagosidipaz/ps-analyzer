@@ -82,9 +82,8 @@ jobs:
           # Build Tracy
           git clone --recursive https://github.com/gear-genomics/tracy.git tracy-build
           cd tracy-build
-          # Patch sdsl-lite CMakeLists.txt to work with modern CMake (>= 3.27)
-          # Use [^)]* to match the full argument including optional FATAL_ERROR keyword
-          sed -i 's/cmake_minimum_required(VERSION [^)]*)/cmake_minimum_required(VERSION 3.5)/' src/xxsds/CMakeLists.txt
+          # Patch all CMakeLists.txt in sdsl-lite (including googletest submodule) for modern CMake
+          find src/xxsds -name "CMakeLists.txt" -exec sed -i 's/cmake_minimum_required(VERSION [^)]*)/cmake_minimum_required(VERSION 3.5)/' {} \;
           sed -i 's/-ldl//g' Makefile
           make STATIC=1 CXX=x86_64-w64-mingw32-g++
           
