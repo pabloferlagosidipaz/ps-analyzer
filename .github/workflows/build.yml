@@ -106,6 +106,7 @@ jobs:
           sed -i 's/-lboost_filesystem/-lboost_filesystem-mt/g' Makefile
           sed -i 's/-lboost_program_options/-lboost_program_options-mt/g' Makefile
           sed -i 's/-lboost_date_time/-lboost_date_time-mt/g' Makefile
+          sed -i 's/^LDFLAGS += /LDFLAGS += -lws2_32 -lregex /' Makefile
           make STATIC=1 CXX=g++
           
           cp src/tracy.exe ../src-tauri/binaries/tracy-x86_64-pc-windows-msvc.exe
