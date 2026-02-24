@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ubuntu-22.04, ubuntu-latest, windows-latest]
+        platform: [ubuntu-latest, windows-latest]
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -128,15 +128,3 @@ jobs:
           releaseBody: "Automated release from GitHub Actions"
           releaseDraft: false
           prerelease: false
-          args: ${{ matrix.platform != 'windows-latest' && '--target x86_64-unknown-linux-gnu' || '' }}
-
-      - name: Rename Linux AppImage
-        if: startsWith(matrix.platform, 'ubuntu-')
-        run: |
-          mv src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/PS.Analyzer_*.AppImage src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/PS.Analyzer_${{ matrix.platform }}_amd64.AppImage
-
-      - name: Upload Renamed AppImage
-        if: startsWith(matrix.platform, 'ubuntu-')
-        uses: softprops/action-gh-release@v1
-        with:
-          files: src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/PS.Analyzer_${{ matrix.platform }}_amd64.AppImage
