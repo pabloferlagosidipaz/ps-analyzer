@@ -69,7 +69,8 @@ jobs:
             pkg-config
             mingw-w64-x86_64-cmake
             mingw-w64-x86_64-libdeflate
-            mingw-w64-x86_64-tre
+            mingw-w64-x86_64-libtre
+            mingw-w64-x86_64-libsystre
             make
             git
 
