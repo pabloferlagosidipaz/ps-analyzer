@@ -122,8 +122,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+          tagName: v__VERSION__ # Matches standard vX.Y.Z format
+          releaseId: ${{ github.event.release.id }}
           releaseName: "PS Analyzer v__VERSION__"
           releaseBody: "Automated release from GitHub Actions"
-          releaseDraft: true
+          releaseDraft: false
           prerelease: false
