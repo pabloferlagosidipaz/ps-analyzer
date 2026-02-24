@@ -86,8 +86,8 @@ jobs:
           find src/xxsds -name "CMakeLists.txt" -exec sed -i 's/cmake_minimum_required(VERSION [^)]*)/cmake_minimum_required(VERSION 3.5)/' {} \;
           # Build sdsl-lite manually (bypass install.sh to avoid googletest build)
           cd src/xxsds/build
-          cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$(pwd)/../../sdslLite" -DBUILD_TESTING=OFF ..
-          make -j sdsl divsufsort divsufsort64
+          cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$(pwd)/../../sdslLite" -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
+          make -j
           make install
           cd ../../..
           # Remove -ldl (not available on Windows) and build tracy
