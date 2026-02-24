@@ -84,6 +84,8 @@ jobs:
           cd tracy-build
           # Patch all CMakeLists.txt in sdsl-lite (including googletest submodule) for modern CMake
           find src/xxsds -name "CMakeLists.txt" -exec sed -i 's/cmake_minimum_required(VERSION [^)]*)/cmake_minimum_required(VERSION 3.5)/' {} \;
+          # Force Unix Makefiles generator (cmake defaults to Ninja on Windows runner)
+          sed -i 's/cmake /cmake -G "Unix Makefiles" /' src/xxsds/install.sh
           sed -i 's/-ldl//g' Makefile
           make STATIC=1 CXX=x86_64-w64-mingw32-g++
           
