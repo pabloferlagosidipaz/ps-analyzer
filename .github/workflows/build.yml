@@ -82,10 +82,15 @@ jobs:
           # Build Tracy
           git clone --recursive https://github.com/gear-genomics/tracy.git tracy-build
           cd tracy-build
-          # Patch all CMakeLists.txt in sdsl-lite (including googletest submodule) for modern CMake
+          # Patch all CMakeLists.txt in sdsl-lite for modern CMake (>= 3.27)
           find src/xxsds -name "CMakeLists.txt" -exec sed -i 's/cmake_minimum_required(VERSION [^)]*)/cmake_minimum_required(VERSION 3.5)/' {} \;
-          # Force Unix Makefiles generator and disable tests (old googletest incompatible with GCC 15)
-          sed -i 's/cmake /cmake -G "Unix Makefiles" -DBUILD_TESTING=OFF /' src/xxsds/install.sh
+          # Build sdsl-lite manually (bypass install.sh to avoid googletest build)
+          cd src/xxsds/build
+          cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$(pwd)/../../sdslLite" -DBUILD_TESTING=OFF ..
+          make -j sdsl divsufsort divsufsort64
+          make install
+          cd ../../..
+          # Remove -ldl (not available on Windows) and build tracy
           sed -i 's/-ldl//g' Makefile
           make STATIC=1 CXX=x86_64-w64-mingw32-g++
           
