@@ -63,8 +63,9 @@ jobs:
           # Bio-Engine
           curl -L https://github.com/lagosproject/bio-engine/releases/latest/download/bio-engine.exe -o src-tauri/binaries/bio-engine-x86_64-pc-windows-msvc.exe
           
-          # Tracy
-          curl -L https://github.com/lagosproject/tracy/releases/latest/download/tracy_windows_x86_64bit.exe -o src-tauri/binaries/tracy-x86_64-pc-windows-msvc.exe
+          # Tracy (Dynamic latest version)
+          LATEST_TRACY_URL=$(curl -s https://api.github.com/repos/gear-genomics/tracy/releases/latest | grep "browser_download_url.*windows" | cut -d '"' -f 4)
+          curl -L "$LATEST_TRACY_URL" -o src-tauri/binaries/tracy-x86_64-pc-windows-msvc.exe
 
       # --- TAURI BUILD ---
 
