@@ -81,6 +81,33 @@ The application communicates with a local FastAPI server (part of the bio-engine
 
 Contributions are welcome! Please feel free to submit pull requests or open issues for feature requests and bug reports.
 
+## Acknowledgments
+
+This project relies on the following open-source tools and projects:
+
+* [Tracy](https://github.com/gear-genomics/tracy) - Used for trace decomposition and assembly.
+* [Ensembl VEP](https://www.ensembl.org/info/docs/tools/vep/index.html) - Used for variant effect prediction.
+* [Bio-Engine](https://github.com/lagosproject/bio-engine) - The Python backend for sequence analysis.
+
+## Built With
+
+Here are the major technologies and packages used to build this project:
+
+* [![Angular][Angular.io]][Angular-url]
+* [![Tauri][Tauri.app]][Tauri-url]
+* [![Rust][Rust-lang.org]][Rust-url]
+* [![Python][Python.org]][Python-url]
+
+<!-- Markdown Links & Images for the badges -->
+[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
+[Angular-url]: https://angular.dev/
+[Tauri.app]: https://img.shields.io/badge/Tauri-FFC131?style=for-the-badge&logo=tauri&logoColor=white
+[Tauri-url]: https://tauri.app/
+[Rust-lang.org]: https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust&logoColor=white
+[Rust-url]: https://www.rust-lang.org/
+[Python.org]: https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white
+[Python-url]: https://www.python.org/
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
