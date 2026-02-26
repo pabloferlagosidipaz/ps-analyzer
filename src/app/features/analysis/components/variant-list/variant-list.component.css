@@ -211,7 +211,8 @@
     border: none;
     padding: 2px;
     cursor: pointer;
-    display: flex;
+    display: none;
+    /* Hide and reclaim space */
     align-items: center;
     justify-content: center;
     gap: 4px;
@@ -220,6 +221,12 @@
     transition: all 0.2s ease;
     min-width: 28px;
     height: 28px;
+}
+
+.variant-card:hover .comment-toggle-btn,
+.variant-card:hover .report-toggle-btn {
+    display: flex;
+    /* Show and occupy space on hover */
 }
 
 .comment-toggle-btn {
@@ -429,6 +436,9 @@
     font-weight: 700;
     color: var(--text-dark);
     line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .variant-meta-row {
@@ -552,6 +562,7 @@
     display: flex;
     align-items: center;
     flex: 1;
+    min-width: 0;
 }
 
 .variant-name-container.has-hgvs-interaction {
