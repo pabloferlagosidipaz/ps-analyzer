@@ -44,6 +44,7 @@ export class VariantListComponent {
     filterConsequence = signal<string>('All');
 
     filterQuality = signal<string>('All');
+    showFilters = signal<boolean>(false);
 
     // UI State for comments
     expandedComments = signal<Set<string>>(new Set());
@@ -132,13 +133,17 @@ export class VariantListComponent {
         return Array.from(patients).sort();
     });
 
-    filteredVariants = computed(() => {
+    /**
+     * Core filtering logic that can be reused for facet counting.
+     * @param overrides - Optional filter overrides (e.g. to calculate counts for a different category)
+     */
+    private applyFilters(overrides: { type?: string, patient?: string, quality?: string, consequence?: string } = {}): Variant[] {
         let list = this.variants();
         const search = this.searchTerm().toLowerCase().trim();
-        const typeFilter = this.filterType().toLowerCase();
-        const patientFilter = this.filterPatient();
-        const qualityFilter = this.filterQuality();
-        const consequenceFilter = this.filterConsequence();
+        const typeFilter = (overrides.type ?? this.filterType()).toLowerCase();
+        const patientFilter = overrides.patient ?? this.filterPatient();
+        const qualityFilter = overrides.quality ?? this.filterQuality();
+        const consequenceFilter = overrides.consequence ?? this.filterConsequence();
 
         // Apply Quality Filter
         if (qualityFilter !== 'All') {
@@ -185,6 +190,62 @@ export class VariantListComponent {
         }
 
         return list;
+    }
+
+    /** The actual list of variants to display after all filters are applied */
+    filteredVariants = computed(() => this.applyFilters());
+
+    /** Total count of variants visible with current filters */
+    totalCount = computed(() => this.filteredVariants().length);
+
+    /** Count of variants for each type, ignoring the current type filter */
+    typeCounts = computed(() => {
+        const counts: Record<string, number> = {};
+        const baseFiltered = this.applyFilters({ type: 'All' });
+        baseFiltered.forEach(v => {
+            counts[v.type] = (counts[v.type] ?? 0) + 1;
+        });
+        counts['All'] = baseFiltered.length;
+        return counts;
+    });
+
+    /** Count of variants for each quality, ignoring the current quality filter */
+    qualityCounts = computed(() => {
+        const counts: Record<string, number> = {};
+        const baseFiltered = this.applyFilters({ quality: 'All' });
+        baseFiltered.forEach(v => {
+            const q = v.filter || 'N/A';
+            counts[q] = (counts[q] ?? 0) + 1;
+        });
+        counts['All'] = baseFiltered.length;
+        return counts;
+    });
+
+    /** Count of variants for each patient, ignoring the current patient filter */
+    patientCounts = computed(() => {
+        const counts: Record<string, number> = {};
+        const baseFiltered = this.applyFilters({ patient: 'All' });
+        baseFiltered.forEach(v => {
+            const patients = this.getInvolvedPatients(v);
+            patients.forEach(p => {
+                counts[p] = (counts[p] ?? 0) + 1;
+            });
+        });
+        counts['All'] = baseFiltered.length;
+        return counts;
+    });
+
+    /** Count of variants for each consequence, ignoring the current consequence filter */
+    consequenceCounts = computed(() => {
+        const counts: Record<string, number> = {};
+        const baseFiltered = this.applyFilters({ consequence: 'All' });
+        baseFiltered.forEach(v => {
+            if (v['consequence']) {
+                counts[v['consequence']] = (counts[v['consequence']] ?? 0) + 1;
+            }
+        });
+        counts['All'] = baseFiltered.length;
+        return counts;
     });
 
     updateSearchTerm(term: string) {
@@ -205,6 +266,10 @@ export class VariantListComponent {
 
     setConsequenceFilter(consequence: string) {
         this.filterConsequence.set(consequence);
+    }
+
+    toggleFilters() {
+        this.showFilters.update(v => !v);
     }
 
     ensureVariantVisible(v: Variant) {

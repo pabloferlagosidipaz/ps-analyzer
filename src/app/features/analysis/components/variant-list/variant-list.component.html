@@ -1,20 +1,30 @@
 <div class="variants-sidebar">
     <div class="variants-header">
         <h3 class="variants-title">Detected Variants</h3>
-        <div class="search-box">
-            <span class="material-symbols-outlined search-icon" aria-hidden="true">search</span>
-            <input class="search-input" type="text" placeholder="Search pos or mutation..." [ngModel]="searchTerm()"
-                (ngModelChange)="updateSearchTerm($event)" aria-label="Search variants by position or mutation">
+        <div class="search-row">
+            <div class="search-box">
+                <span class="material-symbols-outlined search-icon" aria-hidden="true">search</span>
+                <input class="search-input" type="text" placeholder="Search pos or mutation..." [ngModel]="searchTerm()"
+                    (ngModelChange)="updateSearchTerm($event)" aria-label="Search variants by position or mutation">
+            </div>
+            <button class="filter-toggle-btn" [class.active]="showFilters()" (click)="toggleFilters()"
+                title="Toggle filters" aria-label="Toggle filters">
+                <span class="material-symbols-outlined" aria-hidden="true">filter_list</span>
+            </button>
         </div>
+
+        @if (showFilters()) {
         <div class="filter-section">
             <div class="filter-row">
                 <span class="filter-label">Type:</span>
                 <div class="filter-chips">
-                    <button class="chip" [class.active]="filterType() === 'All'" (click)="setFilter('All')">All</button>
+                    <button class="chip" [class.active]="filterType() === 'All'" (click)="setFilter('All')">
+                        All {{ typeCounts()['All'] || 0 }}
+                    </button>
                     @for (type of availableTypes(); track type) {
                     <button class="chip" [class.active]="filterType() === type" [attr.data-type]="type"
                         (click)="setFilter(type)">
-                        {{ type }}
+                        {{ type }} {{ typeCounts()[type] || 0 }}
                     </button>
                     }
                 </div>
@@ -22,11 +32,12 @@
             <div class="filter-row">
                 <span class="filter-label">Quality:</span>
                 <div class="filter-chips">
-                    <button class="chip" [class.active]="filterQuality() === 'All'"
-                        (click)="setQualityFilter('All')">All</button>
+                    <button class="chip" [class.active]="filterQuality() === 'All'" (click)="setQualityFilter('All')">
+                        All {{ qualityCounts()['All'] || 0 }}
+                    </button>
                     @for (q of availableQualities(); track q) {
                     <button class="chip" [class.active]="filterQuality() === q" (click)="setQualityFilter(q)">
-                        {{ q }}
+                        {{ q }} {{ qualityCounts()[q] || 0 }}
                     </button>
                     }
                 </div>
@@ -34,12 +45,13 @@
             <div class="filter-row">
                 <span class="filter-label">Patient:</span>
                 <div class="filter-chips">
-                    <button class="chip" [class.active]="filterPatient() === 'All'"
-                        (click)="setPatientFilter('All')">All</button>
+                    <button class="chip" [class.active]="filterPatient() === 'All'" (click)="setPatientFilter('All')">
+                        All {{ patientCounts()['All'] || 0 }}
+                    </button>
                     @for (patient of availablePatients(); track patient) {
                     <button class="chip" [class.active]="filterPatient() === patient"
                         (click)="setPatientFilter(patient)">
-                        {{ patient }}
+                        {{ patient }} {{ patientCounts()[patient] || 0 }}
                     </button>
                     }
                 </div>
@@ -49,17 +61,20 @@
                 <span class="filter-label">Consequence:</span>
                 <div class="filter-chips">
                     <button class="chip" [class.active]="filterConsequence() === 'All'"
-                        (click)="setConsequenceFilter('All')">All</button>
+                        (click)="setConsequenceFilter('All')">
+                        All {{ consequenceCounts()['All'] || 0 }}
+                    </button>
                     @for (consequence of availableConsequences(); track consequence) {
                     <button class="chip" [class.active]="filterConsequence() === consequence"
                         (click)="setConsequenceFilter(consequence)">
-                        {{ consequence }}
+                        {{ consequence }} {{ consequenceCounts()[consequence] || 0 }}
                     </button>
                     }
                 </div>
             </div>
             }
         </div>
+        }
     </div>
 
     <div class="variants-list">
