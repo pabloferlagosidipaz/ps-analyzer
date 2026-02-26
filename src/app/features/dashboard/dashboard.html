@@ -7,9 +7,14 @@
         </div>
 
         <div class="sidebar-actions">
-            <button class="btn-sidebar-primary" (click)="onImportJob()" aria-label="Import existing project">
+            <button class="btn-sidebar-primary" (click)="resetProject()" aria-label="Create new project">
+                <span class="material-symbols-outlined" aria-hidden="true">add</span>
+                New Project
+            </button>
+            <button class="btn-sidebar-secondary" (click)="onImportJob()" aria-label="Import project"
+                title="Import Project">
                 <span class="material-symbols-outlined" aria-hidden="true">cloud_download</span>
-                Import Project
+                Import
             </button>
         </div>
 
@@ -72,9 +77,7 @@
                 }
             </div>
             @if (currentJobId()) {
-            <button class="btn-outline" (click)="resetProject()" aria-label="Create new project">
-                <span class="material-symbols-outlined" aria-hidden="true">add</span> New Project
-            </button>
+
             }
         </div>
 
@@ -145,8 +148,9 @@
                         <div class="form-group">
                             <label class="form-label">Patient ID / Sample Name</label>
                             <div class="input-with-action">
-                                <input type="text" [ngModel]="patient.name" (ngModelChange)="updatePatientName(patient.id, $event)" placeholder="Enter ID (e.g. PT-104)"
-                                    aria-label="Patient Name">
+                                <input type="text" [ngModel]="patient.name"
+                                    (ngModelChange)="updatePatientName(patient.id, $event)"
+                                    placeholder="Enter ID (e.g. PT-104)" aria-label="Patient Name">
                                 <button class="btn-inline-action btn-icon-danger" (click)="removePatient(patient.id)"
                                     title="Remove Patient" aria-label="Remove patient">
                                     <span class="material-symbols-outlined" aria-hidden="true">delete</span>
